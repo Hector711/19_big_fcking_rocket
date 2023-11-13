@@ -1,0 +1,15 @@
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 90vh;
+
+  background-color: rgb(57, 57, 57);
+}
+
+
+canvas {
+  border: 1px solid rgb(41, 41, 41);
+  background-color: rgb(18, 18, 18);
+
+}
