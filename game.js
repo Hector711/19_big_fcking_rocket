@@ -12,6 +12,8 @@ let numPlanets = 5;
 
 let G = 10;
 
+let destabilise = 0.005;
+
 
 // === ESCUCHADOR DE EVENTOS ===
 addEventListener('keydown', e => {
@@ -45,19 +47,29 @@ function setup() {
   sun = new Body(100, createVector(0,0), createVector(0,0))
 
   // PLANET 
-  for (let i = 0; i < planets.length; i++) {
+  for (let i = 0; i < numPlanets; i++) {
     
     //  Position
+    let mass = random(5,30)
     let r = random(sun.r, min(cvW/2, cvH/2));
-    let theta = random(TWO_PI);
-    let planetPos = createVector(r*cos(theta), r*sin(theta))
+    let angle = random(TWO_PI);
+    let planetPos = createVector(r*cos(angle), r*sin(angle))
     
     // Velocity
     let planetVel = planetPos.copy()
     planetVel.rotate(HALF_PI)
     planetVel.setMag(sqrt(G*sun.mass/planetPos.mag()))
-    
-    planets.push( new Body(25, planetPos, planetVel))
+
+    // Orbita revertida
+    if(random(1) < 0.2) {
+      planetVel.mult(-1)
+    }
+
+    // desestabilizacion de las orbitas
+    planetVel.mult( random(1 - destabilise, 1 + destabilise) )
+
+
+    planets.push( new Body(mass, planetPos, planetVel))
   }
 }
 
@@ -93,6 +105,7 @@ function draw() {
     sun.attract(planets[i]);
     planets[i].update();
     planets[i].show();
+    
   }
 
 
